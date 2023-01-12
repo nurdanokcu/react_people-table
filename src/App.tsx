@@ -1,39 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { PeopleTableHooks } from './components/PeopleTable';
+import { Loader } from './components/Loader';
 
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'bulma/css/bulma.css';
 import './App.scss';
 
-import peopleFromServer from './people.json';
+export const App: React.FC = () => {
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
 
-export class App extends React.Component {
-  state = {};
+  useEffect(() => {
+    setTimeout(() => {
+      setIsDataLoaded(true);
+    }, 2000);
+  }, []);
 
-  render() {
-    return (
-      <div className="box">
-        <h1 className="title">People table</h1>
+  return (
+    <div className="box">
+      <h1 className="title">People table</h1>
 
-        <table className="table is-striped is-narrow">
-          <thead>
-            <tr>
-              <th>name</th>
-              <th>sex</th>
-              <th>born</th>
-            </tr>
-          </thead>
+      {isDataLoaded ? (
+        <PeopleTableHooks />
+      ) : (
+        <Loader />
+      )}
 
-          <tbody>
-            {peopleFromServer.map(person => (
-              <tr key={person.slug}>
-                <td>{person.name}</td>
-                <td>{person.sex}</td>
-                <td>{person.born}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  }
-}
+    </div>
+  );
+};
